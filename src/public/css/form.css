@@ -1,0 +1,119 @@
+label{
+    position: relative;
+}
+input[type="text"]{
+    width: 23rem;
+    /* width: 20rem; */
+    height: 2rem;
+    padding: 0 16px;
+}
+
+.button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 7rem;
+    background-color: #1E90FF;
+    color: white;
+    /* padding: 0 0.8rem; */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    border: none;
+    cursor: pointer;
+}
+.button:hover{
+    transition: .8s;
+    background-color: #6c6c6c;
+    color: white;
+}
+
+/* .connectfield {
+    display: flex;
+    align-items: center;
+    background-color: #1E90FF;
+    letter-spacing: 2px;
+
+    font-size: 0.8rem;
+    width: 25rem;
+    height: 2rem;
+}
+
+#accountArea {
+    width: 40rem;
+    height: 2rem;
+    padding: 6px 16px;
+
+    border-left: 1px solid #6c6c6c;
+    border-top: 1px solid #6c6c6c;
+    border-bottom: 1px solid #6c6c6c;
+    background-color: #fff;
+    display: flex;
+    text-align: center;
+    justify-self: center;
+    overflow-x: scroll;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    color: #6c6c6c;
+}
+
+#accountArea::-webkit-scrollbar {
+    display: none;
+}
+
+#copy-btn {
+    color: #fff;
+    padding: 0.2rem;
+    cursor: pointer;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+#metamask {
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1E90FF;
+    border: none;
+    color: white;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    width: 18rem;
+}
+
+#smartcontract {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1E90FF;
+    border: none;
+    color: white;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    width: 15rem;
+}
+
+#contractArea {
+    width: 40rem;
+    height: 2rem;
+    padding: 6px 16px;
+    border-right: 1px solid #6c6c6c;
+    border-left: 1px solid #6c6c6c;
+    border-top: 1px solid #6c6c6c;
+    border-bottom: 1px solid #6c6c6c;
+    background-color: #fff;
+    display: flex;
+    text-align: center;
+    justify-self: center;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    color: #6c6c6c;
+} */

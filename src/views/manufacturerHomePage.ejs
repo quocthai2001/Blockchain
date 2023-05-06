@@ -1,0 +1,104 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blockchain</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/table.css">
+	<link rel="stylesheet" href="/css/header.css">
+	<link rel="stylesheet" href="/css/button.css">
+	<link rel="stylesheet" href="/css/styles.css">
+	<link rel="stylesheet" href="/css/form.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link
+		href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Mukta:wght@300;400;600;700;800&family=Noto+Sans:wght@400;700&display=swap"
+		rel="stylesheet">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+	<link rel="shortcut icon" type="image/png" href="/img/TBT.png" />
+
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<header>
+		<nav>
+			<ul class="nav-links">
+				<li><a href="/manufacturerHomepage">NÔNG TRẠI</a></li>
+				<li><a href="/addProduct">NHẬP KHO</a></li>
+				<li><a href="/accountManufacturer">TÀI KHOẢN</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="block-container">
+
+		<div class="block-item">
+			<p class="title-block">Metamask</p>
+			<a style="margin-top: 9px;" class="btn" onclick="connectToManufacturer()">Đăng nhập</a> <br>
+			<p style="margin-top: 9px; color: red;" id="accountArea">Matamask: Chưa đăng nhập</p>
+		</div>
+
+		<div class="block-item">
+			<p class="title-block">Gửi hàng</p>
+			<label style="margin: 8px;">
+				<input type="text" id="inputShipProduct" placeholder="Nhập vào ID sản phẩm">
+				<button class="button" onclick="shipProduct()">Gửi hàng</button>
+			</label>
+			<p id="dataShipProduct"></p>
+		</div>
+	</div>
+
+
+	<section>
+		<div class="data-table">
+			<table id="productTable">
+				<thead>
+					<tr>
+						<th>MÃ SẢN PHẨM</th>
+						<th>TÊN SẢN PHẨM</th>
+						<th>LOẠI SẢN PHẨM</th>
+						<th>NGÀY SẢN XUẤT</th>
+						<th>TRẠNG THÁI</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<script src="/js/contract.js"></script>
+	<!-- <script src="/js/connect.js"></script> -->
+
+	<script>
+		const shipProduct = async () => {
+		
+			const product = document.getElementById("inputShipProduct").value;
+			const state = await window.contract.methods.fetchProductState(product).call();
+			console.log(state);
+			if (state != '1')
+				document.getElementById("dataShipProduct").innerHTML = `<p style="color:red;" id="dataShipProduct">Gửi hàng thất bại. Sản phẩm không có sẳn!</p>`;
+			else {
+				await window.contract.methods.shipToThirdParty(product).send({ from: account });
+				document.getElementById("dataShipProduct").innerHTML = `<p style="color:green;" id="dataShipProduct">Gửi hàng thành công</p>`;
+			}
+			
+		}
+
+
+	</script>
+
+</body>
+
+</html>

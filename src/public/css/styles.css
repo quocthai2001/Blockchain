@@ -1,0 +1,106 @@
+.PurchaseProduct {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    padding: 20px 5%;
+}
+
+.block-connect {
+    width: 100%;
+    height: 150px;
+    display: grid;
+    padding: 0 160px 160px;
+    justify-content: center;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.block-item {
+    height: 140px;
+    width: 400px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.title-block {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    border-bottom: 1px solid #6c6c6c;
+    background-color: #1E90FF;
+    color: white;
+    padding: 10px;
+}
+
+.block-container {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    padding: 0 160px 160px;
+    justify-content: space-between;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+    height: 55vh;
+    background-color: #fff;
+    padding: 25px 30px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.container .title {
+    font-weight: 400;
+    height: 2.5rem;
+    color: white;
+    position: relative;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    text-align: center;
+    background-color: #1E90FF;
+    padding: 6px;
+}
+
+.content .form .user-details {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0 12px 0;
+}
+
+.form .user-details .input-box {
+    margin-bottom: 15px;
+    width: calc(100% / 2 - 20px);
+}
+
+.form .input-box span.details {
+    display: block;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.user-details .input-box input {
+    height: 2rem;
+    width: 100%;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    padding-left: 15px;
+    border: 1px solid #ccc;
+    border-bottom-width: 2px;
+    transition: all 0.3s ease;
+}
+
+.button, #dataAddProduct {
+    /* display: flex;
+    padding: 0 160px 160px;
+    justify-content: space-between; */
+    /* margin-bottom: 5px; */
+    text-align: center;
+}
+
+canvas {
+    height: 3rem; width: 4rem;
+}

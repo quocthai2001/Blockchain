@@ -1,0 +1,140 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blockchain</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/table.css">
+	<link rel="stylesheet" href="/css/header.css">
+	<link rel="stylesheet" href="/css/button.css">
+	<link rel="stylesheet" href="/css/styles.css">
+	<link rel="stylesheet" href="/css/form.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.5.5/JsBarcode.all.js"></script>
+	<link rel="shortcut icon" type="image/png" href="/img/TBT.png" />
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul class="nav-links">
+				<li><a class="" href="/storeHomePage">CỬA HÀNG</a></li>
+				<li><a href="/purchaseProduct">NHẬP HÀNG</a></li>
+				<li><a href="/accountStore">TÀI KHOẢN</a></li>
+			</ul>
+		</nav>
+	</header>
+
+
+	<div class="block-container">
+
+		<div class="block-item">
+			<p class="title-block">Metamask</p>
+			<a style="margin-top: 9px;" class="btn" onclick="barcodeStore()">Địa chỉ</a> <br>
+			<p style="margin-top: 9px; color: red;" id="accountArea">Matamask: Chưa có địa chỉ</p>
+		</div>
+
+		<div class="block-item">
+			<p class="title-block">Tra cứu mã vạch</p>
+			<label style="margin: 8px;">
+				<input type="text" id="inputBarcode" placeholder="Nhập vào mã vạch sản phẩm">
+				<button class="button" onclick="searchBarcode()">Tra cứu</button>
+			</label>
+			<p id="dataBarcode"></p>
+		</div>
+	</div>
+
+	<section>
+		<div class="data-table">
+			<table id="productTable">
+				<thead>
+					<tr>
+						<th>MÃ VẠCH</th>
+						<th>TÊN SẢN PHẨM</th>
+						<th>GÍA SẢN PHẨM</th>
+						<th>NGÀY SẢN XUẤT</th>
+						
+						
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<script src="/js/contract.js"></script>
+	<script>
+		const searchBarcode = async () => {
+			const barcode = document.getElementById("inputBarcode").value;
+
+			const productID = await contract.methods.getIDBarcode(barcode).call();
+			// if (parseInt(productID) > 0) document.getElementById("dataBarcode").innerHTML = `<p style="color:green;" id="dataBarcode">YES</p>`;
+			const product = await contract.methods.fetchProductPart3(productID).call();
+			// else document.getElementById("dataBarcode").innerHTML = `<p style="color:green;" id="dataBarcode">NO</p>`;
+			// console.log(typeof parseInt(productID));
+				document.getElementById("dataBarcode").innerHTML = `<p style="color:green;" id="dataBarcode">${product[2]}</p>`;
+			// else document.getElementById("dataBarcode").innerHTML = `<p style="color:red;" id="dataBarcode">Không tồn tại mã vạch</p>`;
+				
+
+			
+			
+		}
+
+
+		const barcodeStore = async () => {
+			if (window.ethereum !== "undefined") {
+				const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+				account = accounts[0];
+
+				document.getElementById("accountArea").innerHTML = `<p style="color:green;" id="accountArea">${account}</p>`;
+			}
+			window.web3 = await new Web3(window.ethereum);
+			window.contract = await new window.web3.eth.Contract(ABI, Address);
+
+			const status = await window.contract.methods.hasThirdPartyRole(account).call();
+			if (status) {
+				const count = await window.contract.methods.fetchBarcodeCount().call();
+				for (let i = 1; i < count; i++) {
+					const product = await contract.methods.getBarcode(i).call();
+					const barcode = product[0];
+					const canvasId = "barcode-" + i;
+					const myDate = new Date(product[4] * 1000);
+					const row = 
+							`<tr>
+    							<td><canvas id="${canvasId}"></canvas></td>
+    							<td>${product[2]}</td>
+								<td>${product[3]}</td>
+								<td>${myDate.toLocaleDateString()}</td>
+    							
+    							
+								
+  							</tr>`;
+							//   <td><button onclick="showBarcode('${canvasId}')">Xem mã vạch</button></td>
+					document.getElementById('productTable').querySelector('tbody').insertAdjacentHTML('beforeend', row);
+					JsBarcode("#" + canvasId, barcode, {
+						// format: 'ean13',
+						// displayValue: true,
+						// margin: 0
+						fontSize: 28,
+					});
+				}
+
+			}
+			else {
+				document.getElementById("accountArea").innerHTML = `<p style="color:red;" id="accountArea">Không phải tài khoản cửa hàng</p>`;
+			}
+		}
+
+	</script>
+</body>
+
+</html>

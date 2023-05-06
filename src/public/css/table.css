@@ -1,0 +1,83 @@
+section
+{
+      display: flex;
+      justify-content: center;
+      align-items: center;  
+}
+.data-table {
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    color: #4f546c;
+    font-size: 0.9rem;
+    background-color: #f9fbff;
+    background-color: red;
+}
+table {
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px #e1e5ee;
+    background-color: white;
+    text-align: left;
+    overflow: hidden;
+
+}
+table thead {
+    box-shadow: 0 5px 10px #e1e5ee;
+    
+}
+table th {
+    padding: 1rem 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    font-size: 0.8rem;
+}
+table td {
+    padding: 1rem 2rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+table a {
+    text-decoration: none;
+    color: #2962ff;
+}
+table .status {
+    border-radius: 0.2rem;
+    background-color: red;
+    padding: 0.2rem 0.5rem;
+    text-align: center;
+}
+
+table .status-available {
+    background-color: #1E90FF;
+    color: white;
+}
+
+table .status-order {
+    background-color: #FF4500;
+    color: white;
+}
+
+table .status-pending {
+    background-color: #FFB90F;
+    color: white;
+}
+table .status-receive {
+    background-color: #32CD32;
+    color: white;
+}
+table .status-barcode {
+    background-color: #696969;
+    color: white;
+}
+
+table .amount {
+    /* text-align: right; */
+}
+table tr:nth-child(even) {
+    background-color: #f4f6fb;
+}
+
+tr td p {
+   margin: 0;
+   text-align: center;
+}

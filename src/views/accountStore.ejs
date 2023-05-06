@@ -1,0 +1,91 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/button.css">
+    <link rel="stylesheet" href="/css/form.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/img/TBT.png" />
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a class="" href="/storeHomePage">CỬA HÀNG</a></li>
+                <li><a href="/purchaseProduct">NHẬP HÀNG</a></li>
+                <li><a href="/accountStore">TÀI KHOẢN</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="block-connect">
+
+        <div class="block-item">
+            <p class="title-block">Metamask</p>
+            <a style="margin-top: 9px;" class="btn" onclick="connected()">Địa chỉ</a> <br>
+            <p style="margin-top: 9px; color: red;" id="accountArea">Matamask: Chưa có địa chỉ</p>
+        </div>
+
+    </div>
+
+
+    <div class="block-container">
+
+        <div class="block-item">
+            <p class="title-block">Đăng ký tài khoản</p>
+            <label style="margin: 8px;">
+                <input type="text" id="inputAddStore" placeholder="Nhập vào địa chỉ">
+                <button class="button" onclick="addStore()">Đăng ký</button>
+            </label>
+            <p id="dataAddStore"></p>
+        </div>
+
+        <div class="block-item">
+            <p class="title-block">Kiểm tra tài khoản</p>
+
+            <label style="margin: 8px;">
+                <input type="text" id="inputHasStore" placeholder="Nhập vào địa chỉ">
+                <button class="button" onclick="hasStore()">Kiểm tra</button>
+            </label>
+            <p id="dataHasStore"></p>
+        </div>
+    </div>
+
+	<script src="/js/contract.js"></script>
+
+    <script>
+// xác thực tài khoản nhà sản xuất
+const hasStore = async () => {
+    const store = document.getElementById("inputHasStore").value;
+    const data = await window.contract.methods.hasThirdPartyRole(store).call();
+    if (data) document.getElementById("dataHasStore").innerHTML = `<p style="color:green;" id="dataHasStore">Là địa chỉ cửa hàng</p>`;
+    else document.getElementById("dataHasStore").innerHTML = `<p style="color:red;" id="dataHasStore">Không phải là địa chỉ cửa hàng</p>`;
+}
+
+// Tạo tài khoản nhà sản xuất
+const addStore = async () => {
+    const store = document.getElementById("inputAddStore").value;
+    if (await window.contract.methods.hasThirdPartyRole(store).call())
+        document.getElementById("dataAddStore").innerHTML = `<p style="color:red;" id="dataAddStore">Đăng ký tài khoản thất bại</p>`;
+    else if (await window.contract.methods.hasManufacturerRole(store).call())
+        document.getElementById("dataAddStore").innerHTML = `<p style="color:red;" id="dataAddStore">Đăng ký tài khoản thất bại</p>`;
+    else {
+        await window.contract.methods.addThirdPartyRole(store).send({ from: account });
+        document.getElementById("dataAddStore").innerHTML = `<p style="color:green;" id="dataAddStore">Đăng ký tài khoản thành công</p>`;
+    }
+}
+    </script>
+</body>
+
+</html>

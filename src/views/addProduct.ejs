@@ -1,0 +1,100 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blockchain</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/header.css">
+	<link rel="stylesheet" href="/css/button.css">
+	<link rel="stylesheet" href="/css/styles.css">
+	<link rel="shortcut icon" type="image/png" href="/img/TBT.png" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul class="nav-links">
+				<li><a href="/manufacturerHomepage">NÔNG TRẠI</a></li>
+				<li><a href="/addProduct">NHẬP KHO</a></li>
+				<li><a href="/accountManufacturer">TÀI KHOẢN</a></li>
+			</ul>
+		</nav>
+	</header>
+
+
+	<div class="block-connect">
+
+		<div class="block-item">
+			<p class="title-block">Metamask</p>
+			<a style="margin-top: 9px;" class="btn" onclick="connected()">Đăng nhập</a> <br>
+			<p style="margin-top: 9px; color: red;" id="accountArea">Matamask: Chưa có địa chỉ</p>
+		</div>
+
+	</div>
+
+	<div class="container">
+		<div class="title">
+			<p>Tạo sản phẩm</p>
+		</div>
+		<div class="content">
+			<div class="form">
+				<div class="user-details">
+					<div class="input-box">
+						<span class="details">Tên sản phẩm</span>
+						<input id="inputProductName" type="text" placeholder="Nhập vào tên sản phẩm">
+					</div>
+					<div class="input-box">
+						<span class="details">Nhà sản xuất</span>
+						<input id="inputManufacturerName" type="text" placeholder="Nhập vào tên nhà sản xuất">
+					</div>
+					<div class="input-box">
+						<span class="details">Loại sản phẩm</span>
+						<input id="inputProductCategory" type="text" placeholder="Nhập vào loại sản phẩm">
+					</div>
+					<div class="input-box">
+						<span class="details">Giá sản phẩm</span>
+						<input id="inputProductPrice" type="text" placeholder="Nhập vào giá sản phẩm">
+					</div>
+				</div>
+
+				<div class="button">
+					<a class="btn" onclick="manufactureAddProduct()">Tạo</a> <br>
+				</div>
+				<p style="margin-top: 8px;" id="dataAddProduct"></p>
+			</div>
+
+		</div>
+
+	</div>
+
+	<script src="/js/contract.js"></script>
+	<script>
+		// Tạo sản phẩm mới
+		const manufactureAddProduct = async () => {
+			const data = await window.contract.methods.hasManufacturerRole(account).call();
+			console.log(data)
+			if (data) {
+				const manufacturerName = document.getElementById("inputManufacturerName").value;
+				const productName = document.getElementById("inputProductName").value;
+				const productPrice = document.getElementById("inputProductPrice").value;
+				const productCategory = document.getElementById("inputProductCategory").value;
+				await window.contract.methods.manufactureProduct(manufacturerName, productName, productPrice, productCategory).send({ from: account });
+				document.getElementById("dataAddProduct").innerHTML = `<p style="color:green;" id="dataAddStore">Tạo sản phẩm thành công</p>`;
+			}
+			else {
+				document.getElementById("dataAddProduct").innerHTML = `<p style="color:red;" id="dataAddStore">Tạo sản phẩm thất bại</p>`;
+				document.getElementById("accountArea").innerHTML = `<p style="color:red;" id="dataPurchaseProduct">Không phải tài khoản nhà sản xuất</p>`;
+			} 
+		}
+	</script>
+</body>
+
+</html>

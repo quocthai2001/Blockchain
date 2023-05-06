@@ -1,0 +1,148 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blockchain</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+		crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="/css/header.css">
+	<link rel="stylesheet" href="/css/button.css">
+	<link rel="stylesheet" href="/css/table.css">
+	<link rel="stylesheet" href="/css/form.css">
+	<link rel="stylesheet" href="/css/styles.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
+	<link rel="shortcut icon" type="image/png" href="/img/TBT.png" />
+	<style>
+
+	</style>
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul class="nav-links">
+				<li><a href="/storeHomePage">CỬA HÀNG</a></li>
+				<li><a href="/purchaseProduct">NHẬP HÀNG</a></li>
+				<li><a href="/accountStore">TÀI KHOẢN</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<div class="block-container">
+
+		<div class="block-item">
+			<p class="title-block">Metamask</p>
+			<a style="margin-top: 9px;" class="btn" onclick="connectToStore()">Đăng nhập</a> <br>
+			<p style="margin-top: 9px; color: red;" id="accountArea">Matamask: Chưa đăng nhập</p>
+		</div>
+
+		<div class="block-item">
+			<p class="title-block">Mã vạch</p>
+			<label style="margin: 8px;">
+				<!-- <input type="text" id="inputPurchaseProduct" placeholder="Nhập vào đia chỉ nhận hàng"> -->
+				<input type="text" id="inputUIDProduct" placeholder="Nhập vào ID sản phẩm">
+				<input type="text" id="inputBarcode" placeholder="Nhập vào mã vạch sản phẩm">
+				<button class="button" onclick="addBarcode()">Tạo mã</button>
+			</label>
+			<p id="dataBarcode"></p>
+		</div>
+
+	</div>
+
+	<div class="block-container">
+
+		<div class="block-item">
+			<p class="title-block">Đặt hàng</p>
+			<label style="margin: 8px;">
+				<!-- <input type="text" id="inputPurchaseProduct" placeholder="Nhập vào đia chỉ nhận hàng"> -->
+				<input type="text" id="inputPurchaseProduct" placeholder="Nhập vào ID sản phẩm">
+				<input type="text" id="inputAddress" placeholder="Nhập vào địa chỉ cửa hàng">
+				<button class="button" onclick="purchaseProduct()">Đặt hàng</button>
+			</label>
+			<p id="dataPurchaseProduct"></p>
+		</div>
+
+		<div class="block-item">
+			<p class="title-block">Nhận hàng</p>
+			<label style="margin: 8px;">
+				<input type="text" id="inputReceiveProduct" placeholder="Nhập vào ID sản phẩm">
+				<button class="button" onclick="receiveProduct()">Nhận hàng</button>
+			</label>
+			<p id="dataReceiveProduct"></p>
+		</div>
+	</div>
+
+
+	<section>
+		<div class="data-table">
+			<table id="productTable">
+				<thead>
+					<tr>
+						<th>MÃ SẢN PHẨM</th>
+						<th>TÊN SẢN PHẨM</th>
+						<th>NHÀ SẢN XUẤT</th>
+						<th>LOẠI SẢN PHẨM</th>
+						<th>NGÀY SẢN XUẤT</th>
+						<th>TRẠNG THÁI</th>
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+
+	<script src="/js/contract.js"></script>
+
+	<script>
+		const addBarcode = async () => {
+			const product = document.getElementById("inputUIDProduct").value;
+			const barcode = document.getElementById("inputBarcode").value;
+			const state = await window.contract.methods.fetchProductState(product).call();
+			if (state != '3')
+			{
+				document.getElementById("dataBarcode").innerHTML = `<p style="color:red;" id="dataBarcode">Không thể tạo mã vạch. Sản phẩm không có sẳn!</p>`;
+			}
+			else {
+				
+				await window.contract.methods.addBarcode(product,barcode).send({ from: account });
+			document.getElementById("dataBarcode").innerHTML = `<p style="color:green;" id="dataBarcode">Tạo mã vạch thành công</p>`;
+
+			}
+
+		}
+
+		const purchaseProduct = async () => {
+			const product = document.getElementById("inputPurchaseProduct").value;
+			const address = document.getElementById("inputAddress").value;
+			const state = await window.contract.methods.fetchProductState(product).call();
+			if (state != '0')
+				document.getElementById("dataPurchaseProduct").innerHTML = `<p style="color:red;" id="dataPurchaseProduct">Đặt hàng thất bại. Sản phẩm không có sẳn!</p>`;
+			else {
+				await window.contract.methods.purchaseByThirdParty(product,address).send({ from: account });
+				document.getElementById("dataPurchaseProduct").innerHTML = `<p style="color:green;" id="dataPurchaseProduct">Đặt hàng thành công</p>`;
+			}
+		}
+
+		const receiveProduct = async () => {
+			const product = document.getElementById("inputReceiveProduct").value;
+			const state = await window.contract.methods.fetchProductState(product).call();
+			if (state != '2')
+				document.getElementById("dataReceiveProduct").innerHTML = `<p style="color:red;" id="dataReceiveProduct">Đặt hàng thất bại. Sản phẩm không có sẳn!</p>`;
+			else {
+				await window.contract.methods.receiveByThirdParty(product).send({ from: account });
+				document.getElementById("dataReceiveProduct").innerHTML = `<p style="color:green;" id="dataReceiveProduct">Nhận hàng thành công</p>`;
+			}
+
+		}
+	</script>
+</body>
+
+</html>
